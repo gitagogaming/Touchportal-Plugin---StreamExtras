@@ -7,7 +7,7 @@
             - Stream Shoutouts when a person raids you, display their avatar + username + most recent video for others to watch etc.. 
             - Let viewers know whom you are raiding and all their info.
             - Allow your viewers could also use these commands in order to retrieve certain info about theirselves or others.
-
+            - etc
 
 Twitch Actions
     • Game/Category = Returns Last Streamed Category of a Channel
