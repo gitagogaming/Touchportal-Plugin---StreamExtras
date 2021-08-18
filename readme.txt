@@ -2,6 +2,15 @@
                           This Plugin is able to retrieve the following info below from any channel, including your own. 
                           ---------------------------------------------------------------------------------------------
 
+These actions could prove useful in a variety of ways.
+
+Stream Shoutouts when a person raids you, display their avatar + username + most recent video for others to watch etc.. 
+Can also be used for when you are about to send off your own raid..
+
+Your viewers could also use these commands in order to retrieve certain info about theirselves or others.
+
+
+
 Twitch Actions
     • Game/Category = Returns Last Streamed Category of a Channel
     • Avatar = Returns the Avatar URL of a Channel (Will fallback to the default avatar if the user does not have an avatar.)
