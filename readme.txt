@@ -16,7 +16,7 @@ Twitch Actions
     • Account Age = Retrieves the account age of the specified user.
     • Follow Age =  Gets the time difference between when :user followed :channel
     • Follower Count =  Retrieves the current amount of followers a Twitch channel has.
-    • Followers = Get (x) recent follower(s) of a Channel
+    • Followers = Get names (x) recent follower(s) of a Channel
     • Uptime = Returns how long the specified channel has been live for the current broadcast
     • ViewerCount = Retrieves the viewer count of a Channel
     • Status = Retrieves a Channels current stream description
