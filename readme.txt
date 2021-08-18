@@ -1,4 +1,7 @@
 
+                          This Plugin is able to retrieve the following info below from any channel, including your own. 
+                          ---------------------------------------------------------------------------------------------
+
 Twitch Actions
     • Game/Category = Returns Last Streamed Category of a Channel
     • Avatar = Returns the Avatar URL of a Channel (Will fallback to the default avatar if the user does not have an avatar.)
@@ -16,3 +19,9 @@ Twitch Actions
 
 Youtube Actions
     • Recent Video = Retrieves the latest video uploaded to the specified channel and returns the title + URL for it.
+
+
+
+
+
+Plugin Created by Gitago with some excellent technical and moral support from KillerBoss and ElyOshri
