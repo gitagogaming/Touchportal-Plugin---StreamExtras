@@ -13,3 +13,6 @@ Twitch Actions
     • Most Recent Upload = Retrieves the latest uploaded video, Title + URL
     • Total Views =  Displays the "total views" a channel has.
     • Random User = Pick a random active user from any stream
+
+Youtube Actions
+    • Recent Video = Retrieves the latest video uploaded to the specified channel and returns the title + URL for it.
