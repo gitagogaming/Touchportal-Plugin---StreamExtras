@@ -7,6 +7,7 @@
             - Stream Shoutouts when a person raids you, display their avatar + username + most recent video for others to watch etc.. 
             - Let viewers know whom you are raiding and all their info.
             - Allow your viewers could also use these commands in order to retrieve certain info about theirselves or others.
+            - Draw Random Viewers Name and then display their Avatar + Total Followers + Video Link Etc and give them a random shoutout
             - etc
 
 Twitch Actions
