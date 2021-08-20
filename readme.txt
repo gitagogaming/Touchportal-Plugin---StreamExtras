@@ -10,6 +10,11 @@
             - Draw Random Viewers Name and then display their Avatar + Total Followers + Video Link Etc and give them a random shoutout
             - etc
 
+List Actions
+    • Add Name to List for Giveaways
+    • Draw Name From List for Giveaways
+    • Add Name to List for First Time Chatter Shoutout (watch video tutorial here:  --->  uh.. coming soon....
+
 Twitch Actions
     • Game/Category = Returns Last Streamed Category of a Channel
     • Avatar = Returns the Avatar URL of a Channel (Will fallback to the default avatar if the user does not have an avatar.)
