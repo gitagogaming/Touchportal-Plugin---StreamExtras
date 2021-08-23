@@ -1,0 +1,448 @@
+{
+  "sdk": 3,
+  "version": 1,
+  "name": "Stream Extras",
+  "id": "gitago.streamextras.plugin",
+  "configuration": {
+    "colorDark": "#a1a915",
+    "colorLight": "#676767"
+  },
+  "plugin_start_cmd": "%TP_PLUGIN_FOLDER%StreamExtras\\streamextras.exe",
+  "categories": [
+    {
+      "id": "gitago.streamextras.plugin.streamextras",
+      "name": "Stream Extras",
+      "imagepath": "%TP_PLUGIN_FOLDER%Countdown Plugin/timer_git.png",
+      "actions": [
+        {
+          "id": "gitago.streamextras.plugin.act.get.game2",
+          "name": "Twitch Extras",
+          "prefix": "Stream Extras",
+          "type": "communicate",
+          "format": "Get {$gitago.streamextras.plugin.act.get.choice$} for {$gitago.streamextras.plugin.act.viewer.name$} ",
+          "tryInline": true,
+          "data": [
+            {
+              "id": "gitago.streamextras.plugin.act.viewer.name",
+              "type": "text",
+              "label": "viewer name",
+              "default": ""
+            },
+            {
+              "id": "gitago.streamextras.plugin.act.get.choice",
+              "type": "choice",
+              "label": "Your Choice",
+              "default": "",
+              "valueChoices": [
+                "Game/Category",
+                "Avatar",
+                "Status",
+                "Account Age",
+                "Follow Age",
+                "Follower Count",
+                "Random User",
+                "Up-Time",
+                "Highlights",
+                "Most Recent Upload",
+                "Total Views",
+                "Viewer Count"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "gitago.streamextras.plugin.act.get.game1",
+          "name": "Get (X) Followers [100 max]",
+          "prefix": "Stream Extras",
+          "type": "communicate",
+          "format": "Retrieve {$gitago.streamextras.plugin.act.get.count$} {$gitago.streamextras.plugin.act.get.choice2$} for {$gitago.streamextras.plugin.act.viewer.name2$} {$gitago.streamextras.plugin.act.asc.desc$} ",
+          "tryInline": true,
+          "data": [
+            {
+              "id": "gitago.streamextras.plugin.act.viewer.name2",
+              "type": "text",
+              "label": "viewer name",
+              "default": ""
+            },
+            {
+              "id": "gitago.streamextras.plugin.act.get.choice2",
+              "type": "choice",
+              "label": "See Multiple Followers or Videos",
+              "default": "Follower(s)",
+              "valueChoices": [
+                "Follower(s)"
+              ]
+            },
+            {
+              "id": "gitago.streamextras.plugin.act.get.count",
+              "type": "number",
+              "label": "count",
+              "default": "0",
+              "allowDecimals": false,
+              "minValue": 0,
+              "maxValue": 100
+            },
+            {
+              "id": "gitago.streamextras.plugin.act.asc.desc",
+              "type": "choice",
+              "label": "asc or desc",
+              "default": "Descending",
+              "valueChoices": [
+                "Ascending",
+                "Descending"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "gitago.streamextras.plugin.act.get.youtubevideo",
+          "name": "Get Youtube Video URL + Description",
+          "prefix": "Stream Extras",
+          "type": "communicate",
+          "format": "Retrieve latest {$gitago.streamextras.plugin.act.get.choice3$}",
+          "tryInline": true,
+          "data": [
+            {
+              "id": "gitago.streamextras.plugin.act.viewer.name3",
+              "type": "text",
+              "label": "viewer name",
+              "default": ""
+            },
+            {
+              "id": "gitago.streamextras.plugin.act.get.choice3",
+              "type": "choice",
+              "label": "See Multiple Followers or Videos",
+              "default": "Youtube Video",
+              "valueChoices": [
+                "Youtube Video"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "gitago.streamextras.plugin.act.live.youtubeurl",
+          "name": "Get Live Youtube URL",
+          "prefix": "Stream Extras",
+          "type": "communicate",
+          "format": "Get the Live Youtube URL for {$gitago.streamextras.plugin.act.youtuber.name$}",
+          "tryInline": true,
+          "data": [
+            {
+              "id": "gitago.streamextras.plugin.act.youtuber.name",
+              "type": "text",
+              "label": "Retrieve Live Youtube URL / Channel Trailer ",
+              "default": ""
+            }
+          ]
+        },
+        {
+          "id": "gitago.streamextras.plugin.act.random",
+          "name": "Pick Random Active Chatter",
+          "prefix": "Stream Extras",
+          "type": "communicate",
+          "format": "Get Random {$gitago.streamextras.plugin.act.get.randomchoice$}",
+          "tryInline": true,
+          "data": [
+            {
+              "id": "gitago.streamextras.plugin.act.get.randomchoice",
+              "type": "choice",
+              "label": "Your Choice",
+              "default": "",
+              "valueChoices": [
+                "Random User"
+              ]
+            }
+          ]
+        }
+      ],
+      "states": [
+        {
+          "id": "gitago.streamextras.plugin.state.recentchannelfollower",
+          "type": "text",
+          "desc": "Channel's Recent Follower(s)",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.highlight",
+          "type": "text",
+          "desc": "Channel's Highlights URL",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.gametitle",
+          "type": "text",
+          "desc": "User - Last Game/Category Streamed",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.channelstatus",
+          "type": "text",
+          "desc": "User - Channel Description",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.avatarurl",
+          "type": "text",
+          "desc": "User - Avatar URL",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.followerscount",
+          "type": "text",
+          "desc": "User - Follower Count",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.viewercount",
+          "type": "text",
+          "desc": "User - Viewer Count",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.totalviews",
+          "type": "text",
+          "desc": "User - Total Channel Views",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.accountage",
+          "type": "text",
+          "desc": "User - Created Date",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.followage",
+          "type": "text",
+          "desc": "User - Follow Age",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.randompick",
+          "type": "text",
+          "desc": "Random - Pick",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.randomuser",
+          "type": "text",
+          "desc": "Random - Active User Selection",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.recentupload",
+          "type": "text",
+          "desc": "Recent - Upload Full Details ",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.uploadurl",
+          "type": "text",
+          "desc": "Recent Video - Upload URL",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.uploadtitle",
+          "type": "text",
+          "desc": "Recent Video - Upload Title",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.youtubeliveurl",
+          "type": "text",
+          "desc": "Youtube LIVE - Full URL ",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.youtubevideofull",
+          "type": "text",
+          "desc": "Youtube Video - Description + URL ",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.youtubevideourl",
+          "type": "text",
+          "desc": "Youtube Video - URL",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.youtubevideodescription",
+          "type": "text",
+          "desc": "Youtube Video - Description",
+          "default": ""
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": "gitago.streamextras.plugin.lists",
+      "name": "List Stuff",
+      "imagepath": "%TP_PLUGIN_FOLDER%Countdown Plugin/timer_git.png",
+      "actions": [
+        {
+          "id": "gitago.streamextras.plugin.act.list",
+          "name": "Add or Remove to/from Lists",
+          "prefix": "Stream Extras",
+          "type": "communicate",
+          "format": "{$gitago.streamextras.plugin.act.list.add.remove$} {$gitago.streamextras.plugin.act.list.chatter$} to the list {$gitago.streamextras.plugin.act.list.name$}",
+          "tryInline": true,
+          "data": [
+            {
+              "id": "gitago.streamextras.plugin.act.list.name",
+              "type": "choice",
+              "label": "Pick a Name",
+              "default": "Chatter List",
+              "valueChoices": [
+                "Chatter List",
+                "Giveaway List"
+              ]
+            },
+            {
+              "id": "gitago.streamextras.plugin.act.list.add.remove",
+              "type": "choice",
+              "label": "Lists: Add / Remove Person ",
+              "default": "Add",
+              "valueChoices": [
+                "Add",
+                "Remove"
+              ]
+            },
+            {
+              "id": "gitago.streamextras.plugin.act.list.chatter",
+              "type": "text",
+              "label": "Chatter to Add or Remove",
+              "default": ""
+            }
+          ]
+        },
+        {
+          "id": "gitago.streamextras.plugin.act.clearlist",
+          "name": "Pick Random, or Clear List",
+          "prefix": "List Stuff",
+          "type": "communicate",
+          "format": "{$gitago.streamextras.plugin.act.list.clear.or.random$} the list {$gitago.streamextras.plugin.act.list.clear$}",
+          "tryInline": true,
+          "data": [
+            {
+              "id": "gitago.streamextras.plugin.act.list.clear",
+              "type": "choice",
+              "label": "Clear a List",
+              "default": "",
+              "valueChoices": [
+                "Chatter List",
+                "Giveaway List"
+              ]
+            },
+            {
+              "id": "gitago.streamextras.plugin.act.list.clear.or.random",
+              "type": "choice",
+              "label": "Clear a List",
+              "default": "",
+              "valueChoices": [
+                "Pick Random from",
+                "Clear"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "gitago.streamextras.plugin.act.queue",
+          "name": "Start/Stop Chatter Queue",
+          "prefix": "Stream Extras",
+          "type": "communicate",
+          "format": "{$gitago.streamextras.plugin.act.queue.choice$} the New Chatter Queue ",
+          "tryInline": true,
+          "data": [
+            {
+              "id": "gitago.streamextras.plugin.act.queue.choice",
+              "type": "choice",
+              "label": "Start or stop",
+              "default": "Stop",
+              "valueChoices": [
+                "Start",
+                "Stop",
+                "Pause"
+              ]
+            }
+          ]
+        }
+      ],
+      "states": [
+        {
+          "id": "gitago.streamextras.plugin.state.chatterlist.queuestatus",
+          "type": "text",
+          "desc": "Chatter List: Queue Status",
+          "default": "False"
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.chatterlist.chattername",
+          "type": "text",
+          "desc": "New Chatter Name",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.chatterlist.status",
+          "type": "text",
+          "desc": "Chatter List - Status",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.chatterlist.chattertotal",
+          "type": "text",
+          "desc": "Chatter List - Total Chatters",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.chatterlist.queuetotal",
+          "type": "text",
+          "desc": "Chatter List - Chat Queue Total",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.chatterlist.random",
+          "type": "text",
+          "desc": "Chatter List - Random Pick",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.giveawaylist.status",
+          "type": "text",
+          "desc": "Giveaway List - Status",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.giveawaylist.total",
+          "type": "text",
+          "desc": "Giveaway List - Total",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.giveawaylist.random",
+          "type": "text",
+          "desc": "Giveaway List - Random Pick",
+          "default": ""
+        }
+      ],
+      "events": []
+    }
+  ],
+  "settings": [
+    {
+      "name": "Twitch ID",
+      "type": "text",
+      "default": "",
+      "readOnly": false
+    },
+    {
+      "name": "Youtube ID",
+      "type": "text",
+      "default": "",
+      "readOnly": false
+    },
+    {
+      "name": "Wait Time",
+      "type": "number",
+      "default": "3",
+      "readOnly": false
+    }
+  ]
+}
