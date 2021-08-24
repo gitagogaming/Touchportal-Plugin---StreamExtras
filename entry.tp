@@ -1,6 +1,6 @@
 {
   "sdk": 3,
-  "version": 1,
+  "version": 2,
   "name": "Stream Extras",
   "id": "gitago.streamextras.plugin",
   "configuration": {
@@ -159,115 +159,115 @@
         {
           "id": "gitago.streamextras.plugin.state.recentchannelfollower",
           "type": "text",
-          "desc": "Channel's Recent Follower(s)",
+          "desc": "SE | Channel's Recent Follower(s)",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.highlight",
           "type": "text",
-          "desc": "Channel's Highlights URL",
+          "desc": "SE | Channel's Highlights URL",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.gametitle",
           "type": "text",
-          "desc": "User - Last Game/Category Streamed",
+          "desc": "SE | User - Last Game/Category Streamed",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.channelstatus",
           "type": "text",
-          "desc": "User - Channel Description",
+          "desc": "SE | User - Channel Description",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.avatarurl",
           "type": "text",
-          "desc": "User - Avatar URL",
+          "desc": "SE | User - Avatar URL",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.followerscount",
           "type": "text",
-          "desc": "User - Follower Count",
+          "desc": "SE | User - Follower Count",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.viewercount",
           "type": "text",
-          "desc": "User - Viewer Count",
+          "desc": "SE | User - Viewer Count",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.totalviews",
           "type": "text",
-          "desc": "User - Total Channel Views",
+          "desc": "SE | User - Total Channel Views",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.accountage",
           "type": "text",
-          "desc": "User - Created Date",
+          "desc": "SE | User - Created Date",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.followage",
           "type": "text",
-          "desc": "User - Follow Age",
+          "desc": "SE | User - Follow Age",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.randompick",
           "type": "text",
-          "desc": "Random - Pick",
+          "desc": "SE | Random Active User OTHER",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.randomuser",
           "type": "text",
-          "desc": "Random - Active User Selection",
+          "desc": "SE | Random - Active User",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.recentupload",
           "type": "text",
-          "desc": "Recent - Upload Full Details ",
+          "desc": "SE | Recent Upload - Full Details ",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.uploadurl",
           "type": "text",
-          "desc": "Recent Video - Upload URL",
+          "desc": "SE | Recent Video - Upload URL",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.uploadtitle",
           "type": "text",
-          "desc": "Recent Video - Upload Title",
+          "desc": "SE | Recent Video - Upload Title",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.youtubeliveurl",
           "type": "text",
-          "desc": "Youtube LIVE - Full URL ",
+          "desc": "SE | Youtube LIVE - Full URL ",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.youtubevideofull",
           "type": "text",
-          "desc": "Youtube Video - Description + URL ",
+          "desc": "SE | Youtube Video - Description + URL ",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.youtubevideourl",
           "type": "text",
-          "desc": "Youtube Video - URL",
+          "desc": "SE | Youtube Video - URL",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.youtubevideodescription",
           "type": "text",
-          "desc": "Youtube Video - Description",
+          "desc": "SE | Youtube Video - Description",
           "default": ""
         }
       ],
@@ -368,57 +368,63 @@
       ],
       "states": [
         {
+          "id": "gitago.streamextras.plugin.state.chatterlist.chatterstatus",
+          "type": "text",
+          "desc": "SE | New Chatter Status",
+          "default": "False"
+        },
+        {
           "id": "gitago.streamextras.plugin.state.chatterlist.queuestatus",
           "type": "text",
-          "desc": "Chatter List: Queue Status",
+          "desc": "SE | Chatter List: Queue Status",
           "default": "False"
         },
         {
           "id": "gitago.streamextras.plugin.state.chatterlist.chattername",
           "type": "text",
-          "desc": "New Chatter Name",
+          "desc": "SE | New Chatter Name",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.chatterlist.status",
           "type": "text",
-          "desc": "Chatter List - Status",
+          "desc": "SE | Chatter List - Status",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.chatterlist.chattertotal",
           "type": "text",
-          "desc": "Chatter List - Total Chatters",
+          "desc": "SE | Chatter List - Total Chatters",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.chatterlist.queuetotal",
           "type": "text",
-          "desc": "Chatter List - Chat Queue Total",
+          "desc": "SE | Chatter List - Chat Queue Total",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.chatterlist.random",
           "type": "text",
-          "desc": "Chatter List - Random Pick",
+          "desc": "SE | Chatter List - Random Pick",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.giveawaylist.status",
           "type": "text",
-          "desc": "Giveaway List - Status",
+          "desc": "SE | Giveaway List - Status",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.giveawaylist.total",
           "type": "text",
-          "desc": "Giveaway List - Total",
+          "desc": "SE | Giveaway List - Total",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.giveawaylist.random",
           "type": "text",
-          "desc": "Giveaway List - Random Pick",
+          "desc": "SE | Giveaway List - Random Pick",
           "default": ""
         }
       ],
