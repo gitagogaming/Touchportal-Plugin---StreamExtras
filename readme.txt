@@ -13,7 +13,7 @@
 List Actions
     • Add Name to List for Giveaways
     • Draw Name From List for Giveaways
-    • Add Name to List for First Time Chatter Shoutout (watch video tutorial here:  --->  uh.. coming soon....
+    • Add Name to List for First Time Chatter Welcome Message (watch video tutorial here:  --->  uh.. coming soon....
 
 Twitch Actions
     • Game/Category = Returns Last Streamed Category of a Channel
@@ -32,6 +32,7 @@ Twitch Actions
 
 Youtube Actions
     • Recent Video = Retrieves the latest video uploaded to the specified channel and returns the title + URL for it.
+    • Pull video URL for Live Stream, If Stream is not live it will default to channel trailer.
 
 
 
