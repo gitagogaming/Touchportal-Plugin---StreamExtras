@@ -2,29 +2,6 @@
 ### send new update to github.. ugh
 
 
-####                    ATTENTION
-
-
-#####          SEMI EXPIRMENTAL BUILD
-
-
-##try .ljust and .rjust to get text file to save better for OBS preview
-
-#Add Custom column alignmetn choice
-#print(tabulate([["one", "two"], ["three", "four"]], colalign=("right",))   example..
-
-
-
-
-#line 794, keep adding in the TOP chatter variables.. all seems well so far..  
-
-
-
-
-
-
-
-
 '''
 Gitago's Stream Extras Plugin
 '''
