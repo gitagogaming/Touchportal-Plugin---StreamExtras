@@ -7,17 +7,16 @@
     "colorDark": "#a1a915",
     "colorLight": "#676767"
   },
-  "plugin_start_cmd": "%TP_PLUGIN_FOLDER%StreamExtras\\streamextras.exe",
   "categories": [
     {
       "id": "gitago.streamextras.plugin.streamextras",
-      "name": "Stream Extras",
+      "name": "SE | Stream Extras",
       "imagepath": "%TP_PLUGIN_FOLDER%Countdown Plugin/timer_git.png",
       "actions": [
         {
           "id": "gitago.streamextras.plugin.act.get.game2",
-          "name": "Twitch Extras",
-          "prefix": "Stream Extras",
+          "name": "Twitch Extras (Get Info)",
+          "prefix": "SE | Stream Extras",
           "type": "communicate",
           "format": "Get {$gitago.streamextras.plugin.act.get.choice$} for {$gitago.streamextras.plugin.act.viewer.name$} ",
           "tryInline": true,
@@ -53,7 +52,7 @@
         {
           "id": "gitago.streamextras.plugin.act.get.game1",
           "name": "Get (X) Followers [100 max]",
-          "prefix": "Stream Extras",
+          "prefix": "SE | Stream Extras",
           "type": "communicate",
           "format": "Retrieve {$gitago.streamextras.plugin.act.get.count$} {$gitago.streamextras.plugin.act.get.choice2$} for {$gitago.streamextras.plugin.act.viewer.name2$} {$gitago.streamextras.plugin.act.asc.desc$} ",
           "tryInline": true,
@@ -96,8 +95,8 @@
         },
         {
           "id": "gitago.streamextras.plugin.act.get.youtubevideo",
-          "name": "Get Youtube Video URL + Description",
-          "prefix": "Stream Extras",
+          "name": "Get YT Video URL + Description",
+          "prefix": "SE | Stream Extras",
           "type": "communicate",
           "format": "Retrieve latest {$gitago.streamextras.plugin.act.get.choice3$}",
           "tryInline": true,
@@ -121,8 +120,8 @@
         },
         {
           "id": "gitago.streamextras.plugin.act.live.youtubeurl",
-          "name": "Get Live Youtube URL",
-          "prefix": "Stream Extras",
+          "name": "Get YT Live URL",
+          "prefix": "SE | Stream Extras",
           "type": "communicate",
           "format": "Get the Live Youtube URL for {$gitago.streamextras.plugin.act.youtuber.name$}",
           "tryInline": true,
@@ -138,7 +137,7 @@
         {
           "id": "gitago.streamextras.plugin.act.random",
           "name": "Pick Random Active Chatter",
-          "prefix": "Stream Extras",
+          "prefix": "SE | Stream Extras",
           "type": "communicate",
           "format": "Get Random {$gitago.streamextras.plugin.act.get.randomchoice$}",
           "tryInline": true,
@@ -245,43 +244,19 @@
           "type": "text",
           "desc": "SE | Recent Video - Upload Title",
           "default": ""
-        },
-        {
-          "id": "gitago.streamextras.plugin.state.youtubeliveurl",
-          "type": "text",
-          "desc": "SE | Youtube LIVE - Full URL ",
-          "default": ""
-        },
-        {
-          "id": "gitago.streamextras.plugin.state.youtubevideofull",
-          "type": "text",
-          "desc": "SE | Youtube Video - Description + URL ",
-          "default": ""
-        },
-        {
-          "id": "gitago.streamextras.plugin.state.youtubevideourl",
-          "type": "text",
-          "desc": "SE | Youtube Video - URL",
-          "default": ""
-        },
-        {
-          "id": "gitago.streamextras.plugin.state.youtubevideodescription",
-          "type": "text",
-          "desc": "SE | Youtube Video - Description",
-          "default": ""
         }
       ],
       "events": []
     },
     {
       "id": "gitago.streamextras.plugin.lists",
-      "name": "List Stuff",
+      "name": "SE | Lists",
       "imagepath": "%TP_PLUGIN_FOLDER%Countdown Plugin/timer_git.png",
       "actions": [
         {
           "id": "gitago.streamextras.plugin.act.list",
-          "name": "Add or Remove to/from Lists",
-          "prefix": "Stream Extras",
+          "name": "Add or Remove to/from a List",
+          "prefix": "SE | Stream Extras",
           "type": "communicate",
           "format": "{$gitago.streamextras.plugin.act.list.add.remove$} {$gitago.streamextras.plugin.act.list.chatter$} to the list {$gitago.streamextras.plugin.act.list.name$}",
           "tryInline": true,
@@ -316,10 +291,10 @@
         },
         {
           "id": "gitago.streamextras.plugin.act.clearlist",
-          "name": "Pick Random, or Clear List",
-          "prefix": "List Stuff",
+          "name": "Save or Clear a List",
+          "prefix": "SE | Lists",
           "type": "communicate",
-          "format": "{$gitago.streamextras.plugin.act.list.clear.or.random$} the list {$gitago.streamextras.plugin.act.list.clear$}",
+          "format": "{$gitago.streamextras.plugin.act.list.clear.or.save$} the list {$gitago.streamextras.plugin.act.list.clear$} in the format {$gitago.streamextras.plugin.act.list.listsaveformat$}",
           "tryInline": true,
           "data": [
             {
@@ -333,13 +308,78 @@
               ]
             },
             {
-              "id": "gitago.streamextras.plugin.act.list.clear.or.random",
+              "id": "gitago.streamextras.plugin.act.list.clear.or.save",
               "type": "choice",
-              "label": "Clear a List",
+              "label": "Save or Clear a List",
               "default": "",
               "valueChoices": [
-                "Pick Random from",
+                "Save",
                 "Clear"
+              ]
+            },
+            {
+              "id": "gitago.streamextras.plugin.act.list.listsaveformat",
+              "type": "choice",
+              "label": "Save Format",
+              "default": "",
+              "valueChoices": [
+                "Grid",
+                "Fancy_Grid",
+                "Github",
+                "Simple",
+                "Presto",
+                "Pretty",
+                "PSQL",
+                "Pipe",
+                "Orgtbl",
+                "Jira",
+                "Rst",
+                "MoinMoin",
+                "YouTrack",
+                "Textile",
+                "HTML",
+                "Latex"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "gitago.streamextras.plugin.act.random.hold",
+          "name": "On Hold Random Pick",
+          "prefix": "SE | Lists",
+          "type": "communicate",
+          "format": "Pick a Random Person from {$gitago.streamextras.plugin.act.onhold.listchoice$}  ",
+          "tryInline": true,
+          "hasHoldFunctionality": true,
+          "data": [
+            {
+              "id": "gitago.streamextras.plugin.act.onhold.listchoice",
+              "type": "choice",
+              "label": "Your Choice",
+              "default": "",
+              "valueChoices": [
+                "Chatter List",
+                "Giveaway List"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "gitago.streamextras.plugin.act.list.pickrandom",
+          "name": "Pick Random from List",
+          "prefix": "SE | Lists",
+          "type": "communicate",
+          "format": "Select a Random User from {$gitago.streamextras.plugin.act.list.choice$}",
+          "tryInline": true,
+          "data": [
+            {
+              "id": "gitago.streamextras.plugin.act.list.choice",
+              "type": "choice",
+              "label": "Pick a Random Choice",
+              "default": "",
+              "valueChoices": [
+                "Chatter List",
+                "Giveaway List"
               ]
             }
           ]
@@ -347,7 +387,7 @@
         {
           "id": "gitago.streamextras.plugin.act.queue",
           "name": "Start/Stop Chatter Queue",
-          "prefix": "Stream Extras",
+          "prefix": "SE | Stream Extras",
           "type": "communicate",
           "format": "{$gitago.streamextras.plugin.act.queue.choice$} the New Chatter Queue ",
           "tryInline": true,
@@ -377,7 +417,7 @@
           "id": "gitago.streamextras.plugin.state.chatterlist.queuestatus",
           "type": "text",
           "desc": "SE | Chatter List: Queue Status",
-          "default": "False"
+          "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.chatterlist.chattername",
@@ -410,6 +450,45 @@
           "default": ""
         },
         {
+          "id": "gitago.streamextras.plugin.state.chatter_first",
+          "type": "text",
+          "desc": "SE | Top Chatter #1",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.chatter_second",
+          "type": "text",
+          "desc": "SE | Top Chatter #2",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.chatter_third",
+          "type": "text",
+          "desc": "SE | Top Chatter #3",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.chatter_fourth",
+          "type": "text",
+          "desc": "SE | Top Chatter #4",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.chatter_fifth",
+          "type": "text",
+          "desc": "SE | Top Chatter #5",
+          "default": ""
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": "gitago.streamextras.plugin.giveawaylist",
+      "name": "SE | Lists: Giveaway",
+      "imagepath": "%TP_PLUGIN_FOLDER%Countdown Plugin/timer_git.png",
+      "actions": [],
+      "states": [
+        {
           "id": "gitago.streamextras.plugin.state.giveawaylist.status",
           "type": "text",
           "desc": "SE | Giveaway List - Status",
@@ -425,6 +504,39 @@
           "id": "gitago.streamextras.plugin.state.giveawaylist.random",
           "type": "text",
           "desc": "SE | Giveaway List - Random Pick",
+          "default": ""
+        }
+      ],
+      "events": []
+    },
+    {
+      "id": "gitago.streamextras.plugin.youtube_extras",
+      "name": "SE | Youtube",
+      "imagepath": "%TP_PLUGIN_FOLDER%Countdown Plugin/timer_git.png",
+      "actions": [],
+      "states": [
+        {
+          "id": "gitago.streamextras.plugin.state.youtubeliveurl",
+          "type": "text",
+          "desc": "SE | Youtube LIVE - Full URL ",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.youtubevideofull",
+          "type": "text",
+          "desc": "SE | Youtube Video - Description + URL ",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.youtubevideourl",
+          "type": "text",
+          "desc": "SE | Youtube Video - URL",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.youtubevideodescription",
+          "type": "text",
+          "desc": "SE | Youtube Video - Description",
           "default": ""
         }
       ],
