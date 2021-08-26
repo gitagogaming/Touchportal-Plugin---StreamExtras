@@ -1,6 +1,30 @@
 #!/usr/bin/env python3
-### last thing done was take the sleep out of addname, also changed the Def from main_loop(data) to just main_loop() and also to start function using Thread(target = main_loop).start() instead of main_loop()
-### NEED TO TEST IT WITH LIVE CHAT N STUFF
+### send new update to github.. ugh
+
+
+####                    ATTENTION
+
+
+#####          SEMI EXPIRMENTAL BUILD
+
+
+##try .ljust and .rjust to get text file to save better for OBS preview
+
+#Add Custom column alignmetn choice
+#print(tabulate([["one", "two"], ["three", "four"]], colalign=("right",))   example..
+
+
+
+
+#line 794, keep adding in the TOP chatter variables.. all seems well so far..  
+
+
+
+
+
+
+
+
 '''
 Gitago's Stream Extras Plugin
 '''
@@ -12,13 +36,14 @@ import re
 import urllib.request as urllib2
 import random
 import time
+from tabulate import tabulate
 from threading import Thread
 from collections import deque
 # imports below are optional, to provide argument parsing and logging functionality
 from argparse import ArgumentParser
 from logging import (getLogger, Formatter, NullHandler, FileHandler, StreamHandler, DEBUG, INFO, WARNING)
 
-__version__ = "2"
+__version__ = "2.2"
 
 PLUGIN_ID = "gitago.streamextras.plugin"
 
@@ -59,23 +84,32 @@ TP_PLUGIN_SETTINGS = {
 TP_PLUGIN_CATEGORIES = {
     "streamextras": {
         'id': PLUGIN_ID + ".streamextras",
-        'name': "Stream Extras",
+        'name': "SE | Stream Extras",
         'imagepath': "%TP_PLUGIN_FOLDER%Countdown Plugin/timer_git.png"
     },
     "lists": {
         'id': PLUGIN_ID + ".lists",
-        'name': "List Stuff",
+        'name': "SE | Lists",
+        'imagepath': "%TP_PLUGIN_FOLDER%Countdown Plugin/timer_git.png"
+    },
+     "giveaway_lists": {
+        'id': PLUGIN_ID + ".giveawaylist",
+        'name': "SE | Lists: Giveaway",
+        'imagepath': "%TP_PLUGIN_FOLDER%Countdown Plugin/timer_git.png"
+    },
+     "youtube_extras": {
+        'id': PLUGIN_ID + ".youtube_extras",
+        'name': "SE | Youtube",
         'imagepath': "%TP_PLUGIN_FOLDER%Countdown Plugin/timer_git.png"
     }
 }
 
 
 TP_PLUGIN_ACTIONS = {
-
-    'action2': {
+    'action1': {
         'category': "streamextras",
         'id': PLUGIN_ID + ".act.get.game2",
-        'name': "Twitch Extras",
+        'name': "Twitch Extras (Get Info)",
         'prefix': TP_PLUGIN_CATEGORIES['streamextras']['name'],
         'type': "communicate",
         "tryInline": True,
@@ -96,7 +130,7 @@ TP_PLUGIN_ACTIONS = {
             },
         }
     },
-    'action1': {
+    'action2': {
         'category': "streamextras",
         'id': PLUGIN_ID + ".act.get.game1",
         'name': "Get (X) Followers [100 max]",
@@ -138,10 +172,10 @@ TP_PLUGIN_ACTIONS = {
             },
         } 
     },
-        'action4': {
+        'action3': {
         'category': "streamextras",
         'id': PLUGIN_ID + ".act.get.youtubevideo",
-        'name': "Get Youtube Video URL + Description",
+        'name': "Get YT Video URL + Description",
         'prefix': TP_PLUGIN_CATEGORIES['streamextras']['name'],
         'type': "communicate",
         "tryInline": True,
@@ -164,10 +198,10 @@ TP_PLUGIN_ACTIONS = {
             },
         } 
     },
-   'Live Youtube URL': {
+   'Action 4': {
         'category': "streamextras",
         'id': PLUGIN_ID + ".act.live.youtubeurl",
-        'name': "Get Live Youtube URL",
+        'name': "Get YT Live URL",
         'prefix': TP_PLUGIN_CATEGORIES['streamextras']['name'],
         'type': "communicate",
         "tryInline": True,
@@ -182,7 +216,7 @@ TP_PLUGIN_ACTIONS = {
             }
         }
     },
-    'action3': {
+    'action5': {
         'category': "streamextras",
         'id': PLUGIN_ID + ".act.random",
         'name': "Pick Random Active Chatter",
@@ -201,10 +235,10 @@ TP_PLUGIN_ACTIONS = {
             },
         }
     },
-    'List Stuff': {
+    'action6': {
         'category': "lists",
         'id': PLUGIN_ID + ".act.list",
-        'name': "Add or Remove to/from Lists",
+        'name': "Add or Remove to/from a List",
         'prefix': TP_PLUGIN_CATEGORIES['streamextras']['name'],
         'type': "communicate",
         "tryInline": True,
@@ -232,14 +266,14 @@ TP_PLUGIN_ACTIONS = {
             },
         }
     },
-    'Clear List': {
+    'action7': {
         'category': "lists",
         'id': PLUGIN_ID + ".act.clearlist",
-        'name': "Pick Random, or Clear List",
+        'name': "Save or Clear a List",
         'prefix': TP_PLUGIN_CATEGORIES['lists']['name'],
         'type': "communicate",
         "tryInline": True,
-        'format': "{$gitago.streamextras.plugin.act.list.clear.or.random$} the list {$gitago.streamextras.plugin.act.list.clear$}",
+        'format': "{$gitago.streamextras.plugin.act.list.clear.or.save$} the list {$gitago.streamextras.plugin.act.list.clear$} in the format {$gitago.streamextras.plugin.act.list.listsaveformat$}",
         'data': {
             'List Names .act.list.clear': {
             'category': "lists",
@@ -251,16 +285,62 @@ TP_PLUGIN_ACTIONS = {
             },
             'Clear or Random': {
             'category': "lists",
-            'id': PLUGIN_ID + ".act.list.clear.or.random",
+            'id': PLUGIN_ID + ".act.list.clear.or.save",
             'type': "choice",
-            'label': "Clear a List",
+            'label': "Save or Clear a List",
             'default': "",
-            'valueChoices': ["Pick Random from", "Clear"]
+            'valueChoices': ["Save", "Clear"]
+            },
+            'List Save Format': {
+            'category': "lists",
+            'id': PLUGIN_ID + ".act.list.listsaveformat",
+            'type': "choice",
+            'label': "Save Format",
+            'default': "",
+            'valueChoices': ["Grid", "Fancy_Grid", "Github", "Simple", "Presto", "Pretty", "PSQL", "Pipe", "Orgtbl", "Jira", "Rst", "MoinMoin", "YouTrack", "Textile", "HTML", "Latex"]
+            }
+        }
+    },
+    'action8': {
+        'category': "lists",
+        'id': PLUGIN_ID + ".act.random.hold",
+        'name': "On Hold Random Pick",
+        'prefix': TP_PLUGIN_CATEGORIES['lists']['name'],
+        'type': "communicate",
+        "tryInline": True,
+        "hasHoldFunctionality": True,
+        'format': "Pick a Random Person from {$gitago.streamextras.plugin.act.onhold.listchoice$}  ",
+        'data': {
+            'on hold random pick': {
+                'id': PLUGIN_ID + ".act.onhold.listchoice",
+                'type': "choice",
+                'label': "Your Choice",
+                'default': "",
+                'valueChoices': [ "Chatter List", "Giveaway List"]
+            },
+        }
+    },
+    'action9': {
+        'category': "lists",
+        'id': PLUGIN_ID + ".act.list.pickrandom",
+        'name': "Pick Random from List",
+        'prefix': TP_PLUGIN_CATEGORIES['lists']['name'],
+        'type': "communicate",
+        "tryInline": True,
+        'format': "Select a Random User from {$gitago.streamextras.plugin.act.list.choice$}",
+        'data': {
+            'List Names .act.list.clear': {
+            'category': "lists",
+            'id': PLUGIN_ID + ".act.list.choice",
+            'type': "choice",
+            'label': "Pick a Random Choice",
+            'default': "",
+            'valueChoices': ["Chatter List", "Giveaway List"]
             }
         }
     },
     ###
-    'Start/Stop/Pause Active Queue': {
+    'action10': {
         'category': "lists",
         'id': PLUGIN_ID + ".act.queue",
         'name': "Start/Stop Chatter Queue",
@@ -280,7 +360,8 @@ TP_PLUGIN_ACTIONS = {
     },
     ##
 }
-
+### giveawaylist.status  needs looked at... its telling what person was removed/added.. 
+## need something like it, but to tel lif the giveaway is actively running or not...
 # Plugin static or dynamic state(s). 
 TP_PLUGIN_STATES = {
     'recentfollowers': {
@@ -389,28 +470,28 @@ TP_PLUGIN_STATES = {
         'default': ""
     },
     'Youtube Live Video: Full URL': {
-        'category': "streamextras",
+        'category': "youtube_extras",
         'id': PLUGIN_ID + ".state.youtubeliveurl",
         'type': "text",
         'desc': "SE | Youtube LIVE - Full URL ",
         'default': ""
     },
     'Youtube Recent Video: Full Info': {
-        'category': "streamextras",
+        'category': "youtube_extras",
         'id': PLUGIN_ID + ".state.youtubevideofull",
         'type': "text",
         'desc': "SE | Youtube Video - Description + URL ",
         'default': ""
     },
     'Youtube Recent Video: URL': {
-        'category': "streamextras",
+        'category': "youtube_extras",
         'id': PLUGIN_ID + ".state.youtubevideourl",
         'type': "text",
         'desc': "SE | Youtube Video - URL",
         'default': ""
     },
     'Youtube Recent Video: Description': {
-        'category': "streamextras",
+        'category': "youtube_extras",
         'id': PLUGIN_ID + ".state.youtubevideodescription",
         'type': "text",
         'desc': "SE | Youtube Video - Description",
@@ -428,7 +509,7 @@ TP_PLUGIN_STATES = {
         'id': PLUGIN_ID + ".state.chatterlist.queuestatus",
         'type': "text",
         'desc': "SE | Chatter List: Queue Status",
-        'default': "False"
+        'default': ""
     },
     'New Chatter Name': {
         'category': "lists",
@@ -466,24 +547,59 @@ TP_PLUGIN_STATES = {
         'default': ""
     },
     'Giveaway List Status': {
-        'category': "lists",
+        'category': "giveaway_lists",
         'id': PLUGIN_ID + ".state.giveawaylist.status",
         'type': "text",
         'desc': "SE | Giveaway List - Status",
         'default': ""
     },
     'Giveaway List Total': {
-        'category': "lists",
+        'category': "giveaway_lists",
         'id': PLUGIN_ID + ".state.giveawaylist.total",
         'type': "text",
         'desc': "SE | Giveaway List - Total",
         'default': ""
     },
     'Giveaway List Random Pick': {
-        'category': "lists",
+        'category': "giveaway_lists",
         'id': PLUGIN_ID + ".state.giveawaylist.random",
         'type': "text",
         'desc': "SE | Giveaway List - Random Pick",
+        'default': ""
+    },
+    'Top Chatter #1': {
+        'category': "lists",
+        'id': PLUGIN_ID + ".state.chatter_first",
+        'type': "text",
+        'desc': "SE | Top Chatter #1",
+        'default': ""
+    },
+    'Top Chatter #2': {
+        'category': "lists",
+        'id': PLUGIN_ID + ".state.chatter_second",
+        'type': "text",
+        'desc': "SE | Top Chatter #2",
+        'default': ""
+    },
+    'Top Chatter #3': {
+        'category': "lists",
+        'id': PLUGIN_ID + ".state.chatter_third",
+        'type': "text",
+        'desc': "SE | Top Chatter #3",
+        'default': ""
+    },
+    'Top Chatter #4': {
+        'category': "lists",
+        'id': PLUGIN_ID + ".state.chatter_fourth",
+        'type': "text",
+        'desc': "SE | Top Chatter #4",
+        'default': ""
+    },
+    'Top Chatter #5': {
+        'category': "lists",
+        'id': PLUGIN_ID + ".state.chatter_fifth",
+        'type': "text",
+        'desc': "SE | Top Chatter #5",
         'default': ""
     },
 }
@@ -509,7 +625,7 @@ global chatterlist
 global giveawaylist #no idea if this global is needed
 totalchatterlist = ""
 queue = deque([])
-cl = []
+cl = {}
 giveawaylist = []
 #have chatterlist = cl because of old code and not tryin to get confused lol
 chatterlist = cl
@@ -520,104 +636,73 @@ wait = 0
 twitchid = ""
 youtubeid = ""
 #### NOT SURE IF THIS IS NEEDED SINCE IT SETS ELSEWHERE WITH LEGIT INFO??
-#########
+
 
 #####  LIST AND QUEUE THINGS #####
-
-def checkchatter(cn, listname):
+def checkchatter(chatname, listname):
     global cl
     global queue
-    if cn == "":
+    global running
+    if chatname == "":
         print("its blank")
     if queue_switch =="":
         print("something went wrong")
-    if queue_switch == "on" and listname =="Chatter List" and cn not in cl:
-        addname(cn, listname)
-        print("CheckChatter: Name Added")
-        print(queue)
-        if queue_switch == "on" and not running:
-#            main_loop('check')
+
+    # IF CHATTER LIST ON OR PAUSED
+    if queue_switch == "on" or queue_switch == "pause" and listname =="Chatter List":
+        update_top_list()
+        if chatname in cl: 
+            cl[chatname] += 1
+            TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.chattertotal", str(len(cl)))           
+            print(cl)                   
+    #IF NOT IN LIST JUST ADD NAME with 1 and add to queue
+
+        if chatname not in cl:
+            cl[chatname] = 1
+            queue.append(chatname)
+           # print("New Chatter:", chatname, "Added")
+            #print("")
+            TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.chattertotal", str(len(cl)))
+            TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.queuetotal", str(len(queue)))
+
+        if not running and queue_switch == "on" and (len(queue)) > 0:
             print("startin it up since its off and chatter not in list")
-            Thread(target = main_loop).start()
-            ## since the switch is on, and its queue isnt running, then do main_loop('check')
-            #which is gonna be a buncha IF checks and decide if to start it or not...
+            running = True
+            Thread(target = startqueue).start()
+        if not running and queue_switch == "pause" and (len(queue)) > 0:
+            pass
+    # just some what ifs below
         if queue_switch =="on" and running:
-            print("Its a running already...")
-            print("")
-    elif queue_switch == "on" and listname =="Chatter List" and cn in cl:
-        print("No Duplicates allowed")
-    if queue_switch == "pause" and listname == "Chatter List" and cn not in cl:
-        print("Queue = Paused, but we still accepting entries")
-        cl.append(cn)
-        queue.append(cn)
-        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.queuetotal", str(len(queue)))
-        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.chattertotal", str(len(cl)))
-        print("Chatter list ", cl)
-        print("Queue List: ", queue)
-
-    if queue_switch == "off" and cn not in cl:
-        print("Queue = OFF, No longer accepting entries")
-##when TP data matches, it sends info to checkchatter(), if chatter is new it sends over to both lists..
-def addname(cn, listname):
-    if listname == "Chatter List":
-#        time.sleep(1)   ### removed sleep here so when many chatters it doesnt waste any time and just adds them to list asap..
-        cl.append(cn)
-        queue.append(cn)
-        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.queuetotal", str(len(queue)))
-#        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.chatterstatus", "TRUE")
-#        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.chatterstatus", "FALSE")
-        
-    if listname == "Giveaway List":       
-        giveawaylist.append(cn)
-        totalgiveawaylist = len(giveawaylist)
-        TPClient.stateUpdate("gitago.streamextras.plugin.state.giveawaylist.status", cn + " added.")
-        TPClient.stateUpdate("gitago.streamextras.plugin.state.giveawaylist.total", str(totalgiveawaylist))
-
-        
-### see about moving this info into check chatter
-def main_loop():
-    global running
-    if queue_switch == "off":
-        pass
-    if queue_switch == "pause":
-        pass
-    if queue_switch == "on" and (len(queue)) > 0:
-        running = True
-        Thread(target = startqueue).start()
-                
-    if queue_switch == "on" and (len(queue)) == 0:
-        print("But its empty...")
-        running = False
+            pass
 
     if queue_switch == "off" and (len(queue)) > 0:
         print("queue is off, and we have people waiting")
         running = False
-
-    if queue_switch == "pause" and (len(queue)) > 0:
-        print("queue is paused, and we have people waiting")
-        running = False
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.chatterstatus", "FALSE")
 
 
-##Sleep here is not being friendly and doesnt seem to want to listen properly
 
-###if you dd more than 4 people at a time, it gets really confused and sometimes puts another name instead of the correct one... 
-#really need to debug it and find out WHY its sending names before it should.. and make it remove name + send name at same time instead also...
+ #maybe use this for 'multiple lists'..
 
-###Something is really screwed up here....
-###for some reason the LAST thing in the queue is being sent over TWICE via touch portal... ... doesnt make sense ??
-###something to do with the length of the queue it hink
-### but if you if len(queue =1 and have it stop.. then restart it so it finishes off.. then its ok??
-#line 620 and 621....
+def addname(chatname, listname):   
+    if listname == "Chatter List":
+        cl[chatname] += 1
+        queue.append(chatname)
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.queuetotal", str(len(queue)))   
+    if listname == "Giveaway List":       
+        giveawaylist.append(chatname)
+        totalgiveawaylist = len(giveawaylist)
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.giveawaylist.status", chatname + " added.")
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.giveawaylist.total", str(totalgiveawaylist))
+
+
 def startqueue():
     global running
-
     while (len(queue)) >= 0:
-#        print("Queue Before Popping: ", queue)
         print("The Remaining Queue [",  (len(queue)),  "]: ",  queue)
         print("") 
-#        time.sleep(10)
         item = queue.popleft()
-        print("Person removed: ", item)
+        print("Person removed: ", item, "next in: ", wait, "seconds")
         print("") 
         TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.chatterstatus", "TRUE")
         TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.chattername", item)
@@ -625,19 +710,12 @@ def startqueue():
         time.sleep(2)
         TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.chatterstatus", "FALSE")
         time.sleep(int(wait))
-        print(wait)
         if (len(queue)) == 0:
             print(f"queue is {(str(len(queue)))}, Running is FALSE now")
+            TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.chatterstatus", "FALSE")
+            TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.queuestatus", "Waiting")
             running = False
             break
-#        print("The Remaining Queue [",  (len(queue)),  "]: ",  queue)
-#        print("") 
-        #       print(len(queue))
-#        time.sleep(5)
-        #wait time controlled via settings depending on what streamer wants.
-        #### THIS CONTROLS THE START/STOP ABILITY OF STUFF
-#        if (len(queue)) == 1:
-#            break
         if queue_switch == "off":
             print("Can not continue, Queue is OFF")
             break
@@ -645,15 +723,23 @@ def startqueue():
             print("Can not continue, Queue is Paused")
             break
 print("Ok, Loop Stopped")
-##switch is controlled by TP data as well, which looks to see if queue_switch is on/off/paused.. andthen decides what to do then...
+
+ ##switch is controlled by TP data,  which looks to see if queue_switch is on/off/paused.. andthen decides what to do then...
 def switch(data):
     global queue_switch
-    if data == "on":
-        queue_switch = "on"
-#        main_loop()
-        Thread(target = main_loop).start()
-        print("Switch On Initiated: ",queue_switch)
-        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.queuestatus", "On")
+    global running
+    if data == "on" and not running:
+        if (len(queue)) == 0:
+            queue_switch = "on"
+            print("0 in QUEUE, Switch is now ON")
+            TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.queuestatus", "On")
+            pass
+        if (len(queue)) > 0:
+            print(len(queue))
+            queue_switch = "on"
+            Thread(target = startqueue).start()
+            print("Switch On Initiated: ",queue_switch)
+            TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.queuestatus", "On")
     if data== "off":
         queue_switch = "off"
         print("Switch Off Initiated: ",queue_switch)
@@ -684,46 +770,178 @@ def removename(chattername, listname):
         
 def clearlist(listclearname):
     global totalchatterlist
-    global totalgiveawaylist
+    #global totalgiveawaylist
     global chatterlist
     global cl
     global giveawaylist
-
     #put this global in so it can clear queue when it clears chatter list..
     global queue
     if listclearname == "Chatter List":
         print("Chatter List CLEARED")
-        cl = []
-        chatterlist = []
+        cl = {}
+        chatterlist = cl
         queue = deque([])
         totalchatterlist = "0"
         TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.queuetotal", str(len(queue)))
         TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.chattertotal", totalchatterlist)
         print(cl)
+        print(chatterlist)
+        print(queue)
     elif listclearname == "Giveaway List":
         print("Giveaway List CLEARED")
         giveawaylist = []
         totalgiveawaylist = "0"
         TPClient.stateUpdate("gitago.streamextras.plugin.state.giveawaylist.total", totalgiveawaylist)
 #used mainly just to pick a random active chatter
+
 def randomlistpick(listname):
     if listname == "Chatter List":
-        randompick = ""
-        randompick = random.choice(chatterlist)
-        while randompick == "":
-            print("but its empty")
-            randompick = random.choice(chatterlist)
-        else:
+        if (int(len(chatterlist))) == 0:
+            print("sorry no body in list")
+        elif (int(len(chatterlist))) > 0:    
+            randompick = random.choice(cl)
             TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.random", randompick)
+            while randompick == "":
+                print("Something went wrong, picking again")
+                TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.random", randompick)
+ #            TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.random", randompick)
 
     if listname == "Giveaway List":
-        randompick = ""
-        randompick = random.choice(giveawaylist)
-        while randompick == "":
-            print("but its empty")
-            randompick = random.choice(giveawaylist)
-        else:
+        if (int(len(giveawaylist))) == 0:
+            print("sorry no body in list")
+        elif (int(len(giveawaylist))) > 0:    
+            randompick = random.choice(cl)
             TPClient.stateUpdate("gitago.streamextras.plugin.state.giveawaylist.random", randompick)
+            while randompick == "":
+                print("Something went wrong, picking again")
+                TPClient.stateUpdate("gitago.streamextras.plugin.state.giveawaylist.random", randompick)
+
+def update_top_list():
+    global cl
+    sorted_chatlist = dict(sorted(cl.items(), key=lambda item: item[1], reverse = True))
+    #print(len(cl))
+    print(cl)
+    if (len(cl)) == 0:
+        
+      pass
+
+    if (len(cl)) == 1:
+            for n, key in enumerate(sorted_chatlist.keys()):
+                globals()["name%d"%n] = key
+            for n, val in enumerate(sorted_chatlist.values()):
+                globals()["count%d"%n] = val
+
+            first = str(count0).ljust(3)+ ":  " + name0.ljust(27)
+            
+            TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_first", (str(first)))
+
+
+    if (len(cl)) == 2:
+        for n, key in enumerate(sorted_chatlist.keys()):
+            globals()["name%d"%n] = key
+        for n, val in enumerate(sorted_chatlist.values()):
+            globals()["count%d"%n] = val
+
+        first = str(count0).ljust(3)+ ":  " + name0.ljust(27)
+        second = str(count1).ljust(3)+ ":  " + name1.ljust(27)
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_first", (str(first)))
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_second", (str(second)))
+
+
+    if (len(cl)) == 3:
+        for n, key in enumerate(sorted_chatlist.keys()):
+            globals()["name%d"%n] = key
+
+        for n, val in enumerate(sorted_chatlist.values()):
+            globals()["count%d"%n] = val  
+
+        first = str(count0).ljust(3)+ ":  " + name0.ljust(27)
+        second = str(count1).ljust(3)+ ":  " + name1.ljust(27)
+        third = str(count2).ljust(3) + ":  " + name2.ljust(27) 
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_first", (str(first)))
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_second", (str(second)))
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_third", (str(third)))
+
+
+    if (len(cl)) == 4:
+        for n, key in enumerate(sorted_chatlist.keys()):
+            globals()["name%d"%n] = key
+
+        for n, val in enumerate(sorted_chatlist.values()):
+            globals()["count%d"%n] = val  
+
+        first = str(count0).ljust(3)+ ":  " + name0.ljust(27)
+        second = str(count1).ljust(3)+ ":  " + name1.ljust(27)
+        third = str(count2).ljust(3) + ":  " + name2.ljust(27)
+        fourth = str(count3).ljust(3) + ":  " + name3.ljust(27)  
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_first", (str(first)))
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_second", (str(second)))
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_third", (str(third)))
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_fourth", (str(fourth)))
+
+
+    if (len(cl)) == 5:
+        for n, key in enumerate(sorted_chatlist.keys()):
+            globals()["name%d"%n] = key
+
+        for n, val in enumerate(sorted_chatlist.values()):
+            globals()["count%d"%n] = val  
+
+        first = str(count0).ljust(3)+ ":  " + name0.ljust(27)
+        second = str(count1).ljust(3)+ ":  " + name1.ljust(27)
+        third = str(count2).ljust(3) + ":  " + name2.ljust(27)
+        fourth = str(count3).ljust(3) + ":  " + name3.ljust(27)  
+        fifth = str(count4).ljust(3) + ":  " + name4.ljust(27)  
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_first", (str(first)))
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_second", (str(second)))
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_third", (str(third)))
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_fourth", (str(fourth)))
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_fifth", (str(fifth)))
+
+
+    if (len(cl)) >= 6:
+        for n, key in enumerate(sorted_chatlist.keys()):
+            globals()["name%d"%n] = key
+
+        for n, val in enumerate(sorted_chatlist.values()):
+            globals()["count%d"%n] = val  
+
+        first = str(count0).ljust(3)+ ":  " + name0.ljust(27)
+        second = str(count1).ljust(3)+ ":  " + name1.ljust(27)
+        third = str(count2).ljust(3) + ":  " + name2.ljust(27)
+        fourth = str(count3).ljust(3) + ":  " + name3.ljust(27)  
+        fifth = str(count4).ljust(3) + ":  " + name4.ljust(27)  
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_first", (str(first)))
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_second", (str(second)))
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_third", (str(third)))
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_fourth", (str(fourth)))
+        TPClient.stateUpdate("gitago.streamextras.plugin.state.chatter_fifth", (str(fifth)))
+
+
+def savelist(list, formatchoice):
+    global cl
+
+    if list =="Chat List":
+        sorted_chatlist = dict(sorted(chatterlist.items(), key=lambda item: item[1], reverse = True))
+        data = [[idx, key, val] for idx, (key, val) in enumerate(sorted_chatlist.items(), start =1)]
+        headers = ["#", "Name", "Messages"]
+        #print(tabulate(data, headers, tablefmt="presto"))
+        print
+        tabulated = (tabulate(data, headers, tablefmt= formatchoice.lower() ))
+        print(tabulated)
+        textfile = open("Active_Chatters.txt", "w")         
+        textfile.write(tabulated)
+        textfile.close()
+
+    if list =="Giveaway List":
+        num = 0
+        totalgiveawaylist=(len(giveawaylist))
+        textfile = open("Giveaway_List.txt", "w")
+        textfile.write("Giveaway List" + " - " + (str(totalgiveawaylist)) + "\n")
+        for element in giveawaylist:
+            num +=1
+            textfile.write(str(num).ljust(2) + " | " + element + "\n")
+        textfile.close()
 
 #### END OF LIST/QUEUE FUNCTIONS #####
 
@@ -739,6 +957,8 @@ def onConnect(data):
     youtubeid = data['settings'][1]['Youtube ID']
     wait = data['settings'][2]['Wait Time']
     print("connected")
+    TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.queuetotal", "0")
+    TPClient.stateUpdate("gitago.streamextras.plugin.state.chatterlist.chattertotal", "0")
     
 
 
@@ -752,19 +972,20 @@ def onSettingUpdate(data):
     youtubeid = data["values"][1]['Youtube ID']
     wait = data['values'][2]['Wait Time']
     
-
-
 # Action handler
 @TPClient.on(TP.TYPES.onAction)
 def onAction(data):
+    #print(data)
     global twitchid
     global youtubeid
     global wait
     youtubename = TPClient.getActionDataValue(data.get("data"), "gitago.streamextras.plugin.act.youtuber.name")
-    clearorrandom = TPClient.getActionDataValue(data.get("data"),"gitago.streamextras.plugin.act.list.clear.or.random")
     queuechoice = TPClient.getActionDataValue(data.get("data"),"gitago.streamextras.plugin.act.queue.choice")
+    clearorsave = TPClient.getActionDataValue(data.get("data"),"gitago.streamextras.plugin.act.list.clear.or.save")
+    randomlistpickname = TPClient.getActionDataValue(data.get("data"), "gitago.streamextras.plugin.act.list.choice")
     listclearname = TPClient.getActionDataValue(data.get("data"),"gitago.streamextras.plugin.act.list.clear")  
-    listname = TPClient.getActionDataValue(data.get("data"),"gitago.streamextras.plugin.act.list.name")    
+    listname = TPClient.getActionDataValue(data.get("data"),"gitago.streamextras.plugin.act.list.name")
+    listformat = TPClient.getActionDataValue(data.get("data"),"gitago.streamextras.plugin.act.list.listsaveformat")     
     addorremove = TPClient.getActionDataValue(data.get("data"),"gitago.streamextras.plugin.act.list.add.remove")   
     chattername = TPClient.getActionDataValue(data.get("data"),"gitago.streamextras.plugin.act.list.chatter")
     ascdesc = TPClient.getActionDataValue(data.get("data"), "gitago.streamextras.plugin.act.asc.desc")
@@ -794,7 +1015,7 @@ def onAction(data):
                     TPClient.stateUpdate("gitago.streamextras.plugin.state.youtubevideodescription", uploadtitle.group(0))
                     TPClient.stateUpdate("gitago.streamextras.plugin.state.youtubevideofull", r.text)      
 
-# Action 1 Stuff
+# Action 1 Data
     if data['actionId'] == "gitago.streamextras.plugin.act.get.game1":
             if choice2 == "Follower(s)":
                 if count == "" or count == "0":
@@ -813,14 +1034,14 @@ def onAction(data):
                     if ascdesc =="Ascending":
                         r = requests.get(f"https://decapi.me/twitch/followers?channel={viewersname2}&count={count}&num&separator=%20-%20&direction=asc")
                         TPClient.stateUpdate("gitago.streamextras.plugin.state.recentchannelfollower", r.text)
-#### dont know if im even using this below ?
+            #### dont know if im even using this below ?
             if choice2 == "Video(s)":
                 if count == "" or count == "0":
                     r = requests.get((f"https://decapi.me/twitch/videos/{viewersname2}"))
-#                    TPClient.stateUpdate("gitago.streamextras.plugin.state.recentchannelfollower", r.text)
+              #      TPClient.stateUpdate("gitago.streamextras.plugin.state.recentchannelfollower", r.text)
                 else:
                     r = requests.get(f"https://decapi.me/twitch/videos/{viewersname2}?limit={count}&separator=%20-%20")
-#                    TPClient.stateUpdate("gitago.streamextras.plugin.state.recentchannelfollower", r.text)
+              #      TPClient.stateUpdate("gitago.streamextras.plugin.state.recentchannelfollower", r.text)
 
             if choice2 == "Youtube Video":
                 r = requests.get(f"https://decapi.me/youtube/latest_video?id={youtubeid}")
@@ -832,12 +1053,9 @@ def onAction(data):
                 TPClient.stateUpdate("gitago.streamextras.plugin.state.youtubevideourl", uploadurl.group(0))
                 TPClient.stateUpdate("gitago.streamextras.plugin.state.youtubevideodescription", uploadtitle.group(0))
                 TPClient.stateUpdate("gitago.streamextras.plugin.state.youtubevideofull", r.text) 
-#                print(uploadtitle.group(0))
-#                print(uploadurl.group(0))
 
 
-
-# Action 2 Stuff
+# Action 2 Data
     if data['actionId'] == "gitago.streamextras.plugin.act.get.game2":
         if choice == "Game/Category":
                 r = requests.get(f"https://decapi.me/twitch/game/{viewersname}")
@@ -894,7 +1112,7 @@ def onAction(data):
             r = requests.get(f"https://decapi.me/twitch/total_views/{viewersname}")
             TPClient.stateUpdate("gitago.streamextras.plugin.state.totalviews", r.text)    
 
-###########need to use regex to seperate this     #Its formatted like this...   TEC Season 2 Highlights  - https://www.twitch.tv/videos/876780091
+ ##########need to use regex to seperate this     #Its formatted like this...   TEC Season 2 Highlights  - https://www.twitch.tv/videos/876780091
         if choice == "Most Recent Upload":
             r = requests.get(f"https://decapi.me/twitch/upload/{viewersname}")
             urlcontent = r.text
@@ -912,25 +1130,41 @@ def onAction(data):
                 TPClient.stateUpdate("gitago.streamextras.plugin.state.recentupload", r.text)     
   
 
-# Action 3 Stuff
+# Action 3 LISTS
     if data['actionId'] == "gitago.streamextras.plugin.act.random":
         if randomchoice == "Random User":
             r = requests.get(f"https://decapi.me/twitch/random_user/{twitchid.lower()}")
             TPClient.stateUpdate("gitago.streamextras.plugin.state.randompick", r.text)
-
-
-## If clearing the lists    
+ ### this below
+    if data['actionId'] == "gitago.streamextras.plugin.act.list.pickrandom":
+        if randomlistpickname == "Chatter List":
+            randomlistpick("Chatter List")
+        if randomlistpickname == "Giveaway List":
+            randomlistpick("Giveaway List")
+ ### LIST CLEAR AND SAVE ####  
     if data['actionId'] == "gitago.streamextras.plugin.act.clearlist":
-        if clearorrandom == "Clear" and listclearname == "Chatter List":
+        print(data)
+        if clearorsave == "Clear" and listclearname == "Chatter List":
+            print("clearing")
             clearlist(listclearname)
-        if clearorrandom == "Clear" and listclearname == "Giveaway List":
+        if clearorsave == "Clear" and listclearname == "Giveaway List":
             clearlist(listclearname)
-## If picking random from list
-## Maybe i should amke this a function, who knows...
-        if clearorrandom == "Pick Random from" and listclearname == "Chatter List":
-            randomlistpick(listclearname)
-        if clearorrandom == "Pick Random from" and listclearname == "Giveaway List":
-            randomlistpick(listclearname)
+
+
+            
+   # MAKE OPTION for save list by message order time, and or most message
+        if clearorsave == "Save" and listclearname == "Chatter List":
+            print(data)
+            #num = 0
+   ###open file and print table
+            savelist('Chat List', listformat)
+
+            
+        if clearorsave == "Save" and listclearname == "Giveaway List":
+           savelist('Giveaway List', listformat)
+
+            
+            
 ##live yuotube
     if data['actionId'] == "gitago.streamextras.plugin.act.live.youtubeurl":
         starturl = "http://www.youtube.com/channel/" + youtubename+ "/live"
@@ -942,9 +1176,10 @@ def onAction(data):
         print(watchurl + livevideoid)
         TPClient.stateUpdate("gitago.streamextras.plugin.state.youtubeliveurl", watchurl + livevideoid)
             
- 
- # If adding to Chatter List
+# 
+# If adding to Chatter List
     if data['actionId'] == "gitago.streamextras.plugin.act.list":
+        #can see about removing if listname, since checkchatter checks what list ?
         if listname == "Chatter List" and addorremove == "Add":
             checkchatter(chattername, listname)
 
@@ -963,9 +1198,26 @@ def onAction(data):
         if queuechoice == "Stop":
             switch('off')
         if queuechoice == "Start":
+            print(len(queue))
             switch('on')
         if queuechoice == "Pause":
             switch('pause')
+            update_top_list()
+
+
+### ON HOLD ACTIONS
+@TPClient.on(TP.TYPES.onHold_down)
+def holdAction(data):
+    if data['actionId'] == "gitago.streamextras.plugin.act.random.hold":
+        while TPClient.isActionBeingHeld("gitago.streamextras.plugin.act.random.hold"):
+            time.sleep(.15)
+            randomlistpick('Chatter List')
+            print(data)
+
+@TPClient.on(TP.TYPES.onHold_up)
+def holdAction(data):
+    if data['actionId'] == "gitago.streamextras.plugin.act.random.hold":
+        print(data)
 
 
 
@@ -981,4 +1233,3 @@ def onError(exc):
     print(exc)
 
 TPClient.connect()
-
