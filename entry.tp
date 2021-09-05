@@ -7,11 +7,12 @@
     "colorDark": "#a1a915",
     "colorLight": "#676767"
   },
+  "plugin_start_cmd": "%TP_PLUGIN_FOLDER%StreamExtras\\streamextras.exe",
   "categories": [
     {
       "id": "gitago.streamextras.plugin.streamextras",
       "name": "SE | Stream Extras",
-      "imagepath": "%TP_PLUGIN_FOLDER%Countdown Plugin/timer_git.png",
+      "imagepath": "%TP_PLUGIN_FOLDER%StreamExtras/extras_icon.png",
       "actions": [
         {
           "id": "gitago.streamextras.plugin.act.get.game2",
@@ -123,7 +124,7 @@
           "name": "Get YT Live URL",
           "prefix": "SE | Stream Extras",
           "type": "communicate",
-          "format": "Get the Live Youtube URL for {$gitago.streamextras.plugin.act.youtuber.name$}",
+          "format": "Get the Live Youtube URL for {$gitago.streamextras.plugin.act.youtuber.name$} (Expirimental: Defaults to Channel Trailer if not Live)",
           "tryInline": true,
           "data": [
             {
@@ -139,14 +140,14 @@
           "name": "Pick Random Active Chatter",
           "prefix": "SE | Stream Extras",
           "type": "communicate",
-          "format": "Get Random {$gitago.streamextras.plugin.act.get.randomchoice$}",
+          "format": "Pick Random Active User From Chat",
           "tryInline": true,
           "data": [
             {
               "id": "gitago.streamextras.plugin.act.get.randomchoice",
               "type": "choice",
               "label": "Your Choice",
-              "default": "",
+              "default": "Random User",
               "valueChoices": [
                 "Random User"
               ]
@@ -158,13 +159,13 @@
         {
           "id": "gitago.streamextras.plugin.state.recentchannelfollower",
           "type": "text",
-          "desc": "SE | Channel's Recent Follower(s)",
+          "desc": "SE | Channel - Recent Follower(s)",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.highlight",
           "type": "text",
-          "desc": "SE | Channel's Highlights URL",
+          "desc": "SE | Channel - Highlights URL",
           "default": ""
         },
         {
@@ -251,7 +252,7 @@
     {
       "id": "gitago.streamextras.plugin.lists",
       "name": "SE | Lists",
-      "imagepath": "%TP_PLUGIN_FOLDER%Countdown Plugin/timer_git.png",
+      "imagepath": "%TP_PLUGIN_FOLDER%StreamExtras/lists_icon.png",
       "actions": [
         {
           "id": "gitago.streamextras.plugin.act.list",
@@ -314,7 +315,8 @@
               "default": "",
               "valueChoices": [
                 "Save",
-                "Clear"
+                "Clear",
+                "Load"
               ]
             },
             {
@@ -344,8 +346,28 @@
           ]
         },
         {
+          "id": "gitago.streamextras.plugin.act.list.pickrandom",
+          "name": "Pick Random from List",
+          "prefix": "SE | Lists",
+          "type": "communicate",
+          "format": "Select a Random User from {$gitago.streamextras.plugin.act.list.choice$}",
+          "tryInline": true,
+          "data": [
+            {
+              "id": "gitago.streamextras.plugin.act.list.choice",
+              "type": "choice",
+              "label": "Pick a Random Choice",
+              "default": "",
+              "valueChoices": [
+                "Chatter List",
+                "Giveaway List"
+              ]
+            }
+          ]
+        },
+        {
           "id": "gitago.streamextras.plugin.act.random.hold",
-          "name": "On Hold Random Pick",
+          "name": "(On-Hold) Pick Random from List",
           "prefix": "SE | Lists",
           "type": "communicate",
           "format": "Pick a Random Person from {$gitago.streamextras.plugin.act.onhold.listchoice$}  ",
@@ -365,21 +387,30 @@
           ]
         },
         {
-          "id": "gitago.streamextras.plugin.act.list.pickrandom",
-          "name": "Pick Random from List",
-          "prefix": "SE | Lists",
+          "id": "gitago.streamextras.plugin.welcomemessage",
+          "name": "Pick Random Line from TXT File",
+          "prefix": "SE | Stream Extras",
           "type": "communicate",
-          "format": "Select a Random User from {$gitago.streamextras.plugin.act.list.choice$}",
+          "format": "Pick a random line from a text file:{$gitago.streamextras.plugin.act.pickrandomlinefile$} for value {$gitago.streamextras.plugin.act.filechoice$} ",
           "tryInline": true,
           "data": [
             {
-              "id": "gitago.streamextras.plugin.act.list.choice",
+              "id": "gitago.streamextras.plugin.act.pickrandomlinefile",
+              "type": "file",
+              "label": "Pick from file",
+              "default": ""
+            },
+            {
+              "id": "gitago.streamextras.plugin.act.filechoice",
               "type": "choice",
-              "label": "Pick a Random Choice",
-              "default": "",
+              "label": "Pick from file",
+              "default": "1",
               "valueChoices": [
-                "Chatter List",
-                "Giveaway List"
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
               ]
             }
           ]
@@ -414,15 +445,21 @@
           "default": "False"
         },
         {
+          "id": "gitago.streamextras.plugin.state.chatterlist.chattername",
+          "type": "text",
+          "desc": "SE | New Chatter Name",
+          "default": ""
+        },
+        {
           "id": "gitago.streamextras.plugin.state.chatterlist.queuestatus",
           "type": "text",
           "desc": "SE | Chatter List: Queue Status",
           "default": ""
         },
         {
-          "id": "gitago.streamextras.plugin.state.chatterlist.chattername",
+          "id": "gitago.streamextras.plugin.state.chatterlist.queuetotal",
           "type": "text",
-          "desc": "SE | New Chatter Name",
+          "desc": "SE | Chatter List - Chat Queue Total",
           "default": ""
         },
         {
@@ -438,12 +475,6 @@
           "default": ""
         },
         {
-          "id": "gitago.streamextras.plugin.state.chatterlist.queuetotal",
-          "type": "text",
-          "desc": "SE | Chatter List - Chat Queue Total",
-          "default": ""
-        },
-        {
           "id": "gitago.streamextras.plugin.state.chatterlist.random",
           "type": "text",
           "desc": "SE | Chatter List - Random Pick",
@@ -452,31 +483,61 @@
         {
           "id": "gitago.streamextras.plugin.state.chatter_first",
           "type": "text",
-          "desc": "SE | Top Chatter #1",
+          "desc": "SE | #1 Top Chatter Name",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.chatter_firstcount",
+          "type": "text",
+          "desc": "SE | #1 Top Chatter Count",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.chatter_second",
           "type": "text",
-          "desc": "SE | Top Chatter #2",
+          "desc": "SE | #2 Top Chatter Name",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.chatter_secondcount",
+          "type": "text",
+          "desc": "SE | #2 Top Chatter Count",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.chatter_third",
           "type": "text",
-          "desc": "SE | Top Chatter #3",
+          "desc": "SE | #3 Top Chatter Name",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.chatter_thirdcount",
+          "type": "text",
+          "desc": "SE | #3 Top Chatter Count",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.chatter_fourth",
           "type": "text",
-          "desc": "SE | Top Chatter #4",
+          "desc": "SE | #4 Top Chatter Name",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.chatter_fourthcount",
+          "type": "text",
+          "desc": "SE | #4 Top Chatter Count",
           "default": ""
         },
         {
           "id": "gitago.streamextras.plugin.state.chatter_fifth",
           "type": "text",
-          "desc": "SE | Top Chatter #5",
+          "desc": "SE | #5 Top Chatter Name",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.chatter_fifthcount",
+          "type": "text",
+          "desc": "SE | #5 Top Chatter Count",
           "default": ""
         }
       ],
@@ -485,7 +546,7 @@
     {
       "id": "gitago.streamextras.plugin.giveawaylist",
       "name": "SE | Lists: Giveaway",
-      "imagepath": "%TP_PLUGIN_FOLDER%Countdown Plugin/timer_git.png",
+      "imagepath": "%TP_PLUGIN_FOLDER%StreamExtras/lists_icon.png",
       "actions": [],
       "states": [
         {
@@ -512,7 +573,7 @@
     {
       "id": "gitago.streamextras.plugin.youtube_extras",
       "name": "SE | Youtube",
-      "imagepath": "%TP_PLUGIN_FOLDER%Countdown Plugin/timer_git.png",
+      "imagepath": "%TP_PLUGIN_FOLDER%StreamExtras/lists_icon.png",
       "actions": [],
       "states": [
         {
@@ -541,6 +602,45 @@
         }
       ],
       "events": []
+    },
+    {
+      "id": "gitago.streamextras.plugin.welcome_message",
+      "name": "SE | Random From File",
+      "imagepath": "%TP_PLUGIN_FOLDER%StreamExtras/lists_icon.png",
+      "actions": [],
+      "states": [
+        {
+          "id": "gitago.streamextras.plugin.state.random_line_file_1",
+          "type": "text",
+          "desc": "SE | 1 - Random Line From File",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.random_line_file_2",
+          "type": "text",
+          "desc": "SE | 2 - Random Line From File",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.random_line_file_3",
+          "type": "text",
+          "desc": "SE | 3 - Random Line From File",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.random_line_file_4",
+          "type": "text",
+          "desc": "SE | 4 - Random Line From File",
+          "default": ""
+        },
+        {
+          "id": "gitago.streamextras.plugin.state.random_line_file_5",
+          "type": "text",
+          "desc": "SE | 5 - Random Line From File",
+          "default": ""
+        }
+      ],
+      "events": []
     }
   ],
   "settings": [
@@ -560,6 +660,12 @@
       "name": "Wait Time",
       "type": "number",
       "default": "3",
+      "readOnly": false
+    },
+    {
+      "name": "Auto Save",
+      "type": "text",
+      "default": "On",
       "readOnly": false
     }
   ]
