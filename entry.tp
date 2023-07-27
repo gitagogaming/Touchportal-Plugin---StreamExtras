@@ -1,6 +1,6 @@
 {
   "sdk": 3,
-  "version": 2,
+  "version": 230,
   "name": "Stream Extras",
   "id": "gitago.streamextras.plugin",
   "configuration": {
