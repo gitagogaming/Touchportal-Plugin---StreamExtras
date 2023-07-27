@@ -1,5 +1,5 @@
 {
-  "sdk": 3,
+  "sdk": 6,
   "version": 261,
   "name": "Stream Extras",
   "id": "gitago.streamextras.plugin",
@@ -9,7 +9,7 @@
   },
   "plugin_start_cmd": "%TP_PLUGIN_FOLDER%StreamExtras\\streamextras.exe",
   "plugin_start_cmd_linux": "sh %TP_PLUGIN_FOLDER%TwitchExtras//start.sh streamextras",
-  "plugin_start_cmd_mac": "sh %TP_PLUGIN_FOLDER%TwitchExtras//start.sh streamextras",
+  "plugin_start_cmd_mac": "sh %TP_PLUGIN_FOLDER%TwitchExtras//start.sh streamextras"
   "categories": [
     {
       "id": "gitago.streamextras.plugin.streamextras",
