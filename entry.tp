@@ -8,8 +8,8 @@
     "colorLight": "#676767"
   },
   "plugin_start_cmd": "%TP_PLUGIN_FOLDER%StreamExtras\\streamextras.exe",
-  "plugin_start_cmd_linux": "sh %TP_PLUGIN_FOLDER%TwitchExtras//start.sh streamextras",
-  "plugin_start_cmd_mac": "sh %TP_PLUGIN_FOLDER%TwitchExtras//start.sh streamextras",
+  "plugin_start_cmd_linux": "sh %TP_PLUGIN_FOLDER%StreamExtras//start.sh streamextras",
+  "plugin_start_cmd_mac": "sh %TP_PLUGIN_FOLDER%StreamExtras//start.sh streamextras",
   "categories": [
     {
       "id": "gitago.streamextras.plugin.streamextras",
