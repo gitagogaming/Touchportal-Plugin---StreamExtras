@@ -1,4 +1,4 @@
-# This was my first plugin I ever created in its original form.. it works as expected but the code is not pretty.. Be warned!
+## This was my first plugin I ever created in its original form.. it works as expected but the code is not pretty.. Be warned!
 
 
                           This Plugin is able to retrieve the following info below from any channel, including your own. 
@@ -12,12 +12,14 @@
             - Draw Random Viewers Name and then display their Avatar + Total Followers + Video Link Etc and give them a random shoutout
             - etc
 
-List Actions
+### List Actions
+
     • Add Name to List for Giveaways
     • Draw Name From List for Giveaways
     • Add Name to List for First Time Chatter Welcome Message (watch video tutorial here:  --->  uh.. coming soon....
 
-Twitch Actions
+### Twitch Actions
+
     • Game/Category = Returns Last Streamed Category of a Channel
     • Avatar = Returns the Avatar URL of a Channel (Will fallback to the default avatar if the user does not have an avatar.)
     • Account Age = Retrieves the account age of the specified user.
@@ -32,7 +34,8 @@ Twitch Actions
     • Total Views =  Displays the "total views" a channel has.
     • Random User = Pick a random active user from any stream
 
-Youtube Actions
+### Youtube Actions
+
     • Recent Video = Retrieves the latest video uploaded to the specified channel and returns the title + URL for it.
     • Pull video URL for Live Stream, If Stream is not live it will default to channel trailer.
 
