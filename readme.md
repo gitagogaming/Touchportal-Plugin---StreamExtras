@@ -46,6 +46,6 @@ These actions could prove useful in a variety of ways.
 
 
 
+---
 
-
-Plugin Created by Gitago with some excellent technical and moral support from KillerBoss and ElyOshri
+### Plugin Created by Gitago with some excellent technical and moral support from KillerBoss and ElyOshri
