@@ -1,4 +1,5 @@
-## This was my first plugin I ever created in its original form.. it works as expected but the code is not pretty.. Be warned!
+## This was my first plugin I ever created in its original form..
+it works as expected but the code is not pretty.. Be warned!
 
 
                           This Plugin is able to retrieve the following info below from any channel, including your own. 
