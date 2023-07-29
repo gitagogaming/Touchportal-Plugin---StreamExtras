@@ -1,20 +1,22 @@
-This was my first plugin I ever created in its original form..
-it works as expected but the code is not pretty.. Be warned!
 
 
-
----
-
-                          This Plugin is able to retrieve the following info below from any channel, including your own. 
+                                         This was my first plugin I ever created in its original form..
                           ---------------------------------------------------------------------------------------------
 
-                                         These actions could prove useful in a variety of ways.
+                                         it works as expected but the code is not pretty.. Be warned!
+                                         
+This Plugin is able to retrieve the following info below from any channel, including your own.
 
-            - Stream Shoutouts when a person raids you, display their avatar + username + most recent video for others to watch etc.. 
-            - Let viewers know whom you are raiding and all their info.
-            - Allow your viewers could also use these commands in order to retrieve certain info about theirselves or others.
-            - Draw Random Viewers Name and then display their Avatar + Total Followers + Video Link Etc and give them a random shoutout
-            - etc
+These actions could prove useful in a variety of ways.
+
+---
+### Example Uses
+
+  - Stream Shoutouts when a person raids you, display their avatar + username + most recent video for others to watch etc.. 
+  - Let viewers know whom you are raiding and all their info.
+  - Allow your viewers could also use these commands in order to retrieve certain info about theirselves or others.
+  - Draw Random Viewers Name and then display their Avatar + Total Followers + Video Link Etc and give them a random shoutout
+  - etc
 
 ### List Actions
 
